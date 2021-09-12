@@ -1,13 +1,10 @@
 package com.company;
 
-public class Evento {
+public class Evento implements Comparable<Evento>, Cloneable {
     private TipoEvento tipoEvento;
     private double tempoExecucao;
 
-    public Evento(TipoEvento tipoEvento, double tempoExecucao) {
-        this.tipoEvento = tipoEvento;
-        this.tempoExecucao = tempoExecucao;
-    }
+    public Evento() { }
 
     public TipoEvento getTipoEvento() {
         return tipoEvento;
@@ -23,5 +20,10 @@ public class Evento {
 
     public void setTempoExecucao(double tempoExecucao) {
         this.tempoExecucao = tempoExecucao;
+    }
+
+    @Override
+    public int compareTo(Evento o) {
+        return 0;
     }
 }

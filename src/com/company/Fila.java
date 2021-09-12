@@ -1,19 +1,47 @@
 package com.company;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Fila {
 
     private int tamanhoAtual;
     private int capacidade;
     private double[] estado;
-    ArrayList<Evento> eventos;
+    double[] intervaloAtendimento;
 
-    public Fila(int capacidade) {
+    public Fila(int capacidade, double[] intervaloAtendimento) {
         this.tamanhoAtual = 0;
         this.capacidade = capacidade;
         this.estado = new double[capacidade];
-        this.eventos = new ArrayList<>();
+
+        Arrays.fill(estado, 0.0);
+
+        this.intervaloAtendimento = intervaloAtendimento;
+    }
+
+    public void chegada(Escalonador escalonador) {
+        escalonador.contabilizaTempo(this);
+
+        if (this.tamanhoAtual >= capacidade) {
+            escalonador.setPerdidos(escalonador.getPerdidos() + 1);
+        } else {
+            this.tamanhoAtual++;
+
+            if (this.tamanhoAtual <= 1) {
+                escalonador.agendaSaida(this);
+            }
+
+            escalonador.agendaChegada(this);
+        }
+    }
+
+    public void saida(Escalonador escalonador) {
+        escalonador.contabilizaTempo(this);
+
+        this.setTamanhoAtual(this.getTamanhoAtual() - 1);
+        if (this.getTamanhoAtual() >= 1) {
+            escalonador.agendaSaida(this);
+        }
     }
 
     public int getTamanhoAtual() {
@@ -40,11 +68,11 @@ public class Fila {
         this.estado = estado;
     }
 
-    public ArrayList<Evento> getEventos() {
-        return eventos;
+    public double[] getIntervaloAtendimento() {
+        return intervaloAtendimento;
     }
 
-    public void setEventos(ArrayList<Evento> eventos) {
-        this.eventos = eventos;
+    public void setIntervaloAtendimento(double[] intervaloAtendimento) {
+        this.intervaloAtendimento = intervaloAtendimento;
     }
 }
